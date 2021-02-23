@@ -1,0 +1,59 @@
+{% extends "create.html" %}
+
+{% block create_content %}
+	<p>
+		{{ form.name.label }}<br>
+		{{ form.name }}
+	</p>
+	<p>
+		{{ form.race.label }}<br>
+		{{ form.race(onchange="varsUpdate(form.race)") }}
+	</p>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script>
+				function varsUpdate(race){
+						$.post('/charDetE.html', {race: document.getElementById("race").value});
+				}
+		</script>
+	<p>
+		{{ form.variants.label }}<br>
+		{{ form.variants }}
+	</p>
+	<p>
+		{{ form.gender.label }}<br>
+		{{ form.gender }}
+	</p>
+	<p>
+		{{ form.background.label }}<br>
+		{{ form.background }}
+	</p>
+	<p>
+		{{ form.alignment.label }}<br>
+		{{ form.alignment }}
+	</p>
+	<p>
+		{{ form.deity.label }}<br>
+		{{ form.deity }}
+	</p>
+	<p>
+		{{ form.pt1.label }}<br>
+		{{ form.pt1 }}
+	</p>
+	<p>
+		{{ form.pt2.label }}<br>
+		{{ form.pt2 }}
+	</p>
+	<p>
+		{{ form.ideal.label }}<br>
+		{{ form.ideal }}
+	</p>
+	<p>
+		{{ form.bond.label }}<br>
+		{{ form.bond }}
+	</p>
+	<p>
+		{{ form.flaw.label }}<br>
+		{{ form.flaw }}
+	</p>
+
+{% endblock %}

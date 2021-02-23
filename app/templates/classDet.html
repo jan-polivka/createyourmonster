@@ -1,0 +1,8 @@
+{% extends "create.html" %}
+
+{% block create_content %}
+	{% for field in form.classList %}
+		{{ field.SelectField.label }}
+		{{ field.SelectField }}
+	{% endfor %}
+{% endblock %}
