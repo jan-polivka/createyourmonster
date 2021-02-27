@@ -25,7 +25,7 @@ def classDet():
     return render_template('classDet.html', title='New Character',
             form = form, length = session['level'])
 
-@app.route('/skillsDet.html', methods=['GET','POST'])
-def skillsLangDet():
+#@app.route('/skillsDet.html', methods=['GET','POST'])
+#def skillsLangDet():
 
 
