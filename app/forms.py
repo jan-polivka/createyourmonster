@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, StringField, SelectField, SubmitField
+from wtforms import IntegerField, FieldList, FormField, StringField, SelectField, SubmitField
 
 #races=[('dwarf', 'Dwarf'), ('elf', 'Elf'), ('half', 'Halfling'),
 #        ('human', 'Human'), ('drag', 'Dragonborn'), ('gnome', 'Gnome'),
@@ -31,13 +31,13 @@ class CharDets(FlaskForm):
     level = IntegerField('Level')
     submit = SubmitField('Next')
 
-class ClassDets(FlaskForm):
-    classList = []
-    submit = SubmitField('Next')
+class singleClass(FlaskForm):
+    classPick = SelectField('Class', choices=classes)
+    hitPoints = IntegerField('Hit Points')
 
-    def addLevels(self, number):
-        for i in range(number):
-            self.classList.append(SelectField('Class', choices=classes))
+class ClassDets(FlaskForm):
+    submit = SubmitField('Next')
+    classList = FieldList(FormField(singleClass))
 
 
 #class SkillsLangsDets(FlaskForm):

@@ -1,8 +1,15 @@
 {% extends "create.html" %}
 
 {% block create_content %}
-	{% for field in form.classList %}
-		{{ field.SelectField.label }}
-		{{ field.SelectField }}
-	{% endfor %}
+			{% for sub in form.classList %}
+				{% for el in sub %}
+					{% if el.label.text == "Class" %}
+						{{ el.label }} {{ el }}
+					{% endif %}
+					{% if el.label.text == "Hit Points" %}
+						{{ el.label }} {{ el(size = 1) }}
+						<br>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
 {% endblock %}

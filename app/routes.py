@@ -1,6 +1,7 @@
 from flask import render_template, redirect, request, session
 from app import app
-from app.forms import CharDets, ClassDets
+from app.forms import CharDets, ClassDets, classes, singleClass
+from wtforms import IntegerField, FormField, SelectField
 
 @app.route('/')
 @app.route('/index.html')
@@ -19,7 +20,12 @@ def charDet():
 @app.route('/classDet.html', methods=['GET','POST'])
 def classDet():
     form = ClassDets()
-    form.addLevels(session['level'])
-    print (form)
+    for i in range(session['level']):
+        form.classList.append_entry(FormField(singleClass))
     return render_template('classDet.html', title='New Character',
-            form = form)
+            form = form, length = session['level'])
+
+@app.route('/skillsDet.html', methods=['GET','POST'])
+def skillsLangDet():
+
+
