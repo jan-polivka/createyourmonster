@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<h1>Your existing characters</h1>
+	<div>
+		{% for ch in lst %}
+			{{ ch.name }}
+			<br>
+		{% endfor %}
+	</div>
+
+
+{% endblock %}
