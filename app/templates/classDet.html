@@ -2,6 +2,7 @@
 
 {% block create_content %}
 			{% for sub in form.classList %}
+				{{ sub.hidden_tag() }}
 				{% for el in sub %}
 					{% if el.label.text == "Class" %}
 						{{ el.label }} {{ el }}

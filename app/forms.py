@@ -18,6 +18,10 @@ races=[('dwarf', 'Hill Dwarf'), ('elf', 'High Elf'),
 
 classes=[('barbarian', 'Barbarian'), ('bard', 'Bard')]
 
+languages = [('Common')]
+
+skills = [(''), ('Proficient'), ('Expertise')]
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -60,14 +64,35 @@ class CharDets(FlaskForm):
     level = IntegerField('Level')
     submit = SubmitField('Next')
 
-class singleClass(FlaskForm):
+class SingleClass(FlaskForm):
     classPick = SelectField('Class', choices=classes)
     hitPoints = IntegerField('Hit Points')
 
 class ClassDets(FlaskForm):
     submit = SubmitField('Next')
-    classList = FieldList(FormField(singleClass))
+    classList = FieldList(FormField(SingleClass))
 
+class SingleLang(FlaskForm):
+    lang = SelectField('Language', choices=languages)
 
-#class SkillsLangsDets(FlaskForm):
-
+class SkillsLangsDets(FlaskForm):
+    submit = SubmitField('Finish')
+    langList = FieldList(FormField(SingleLang))
+    acrobatics = SelectField('Acrobatic', choice=skills)
+    animals = SelectField('Animal Handling', choice=skills)
+    arcana = SelectField('Arcana', choice=skills)
+    athletics = SelectField('Athletics', choice=skills)
+    deception = SelectField('Deception', choice=skills)
+    history = SelectField('History', choice=skills)
+    insight = SelectField('Insight', choice=skills)
+    intimidation = SelectField('Intimidation', choice=skills)
+    investigation = SelectField('Investigation', choice=skills)
+    medicine = SelectField('Medicine', choice=skills)
+    nature = SelectField('Nature', choice=skills)
+    perception = SelectField('Perception', choice=skills)
+    performance = SelectField('Performance', choice=skills)
+    persuasion = SelectField('Persuasion', choice=skills)
+    religion = SelectField('Religion', choice=skills)
+    sleight = SelectField('Sleight of Hand', choice=skills)
+    stealth = SelectField('Stealth', choice=skills)
+    survival = SelectField('Survival', choice=skills)

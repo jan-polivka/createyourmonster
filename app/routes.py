@@ -3,9 +3,9 @@ from flask import flash, render_template, redirect, request, session, \
 from flask_login import current_user, login_user, logout_user
 from app import app, db
 from app.models import Sheet, User
-from app.forms import CharDets, ClassDets, classes, LoginForm, \
+from app.forms import CharDets, ClassDets, LoginForm, \
                         RegistrationForm, \
-                        singleClass
+                        SkillsLangsDets, SingleClass
 from wtforms import IntegerField, FormField, SelectField
 
 @app.route('/')
@@ -60,7 +60,7 @@ def charDet():
                 db.session.add(s)
                 db.session.commit()
                 print (Sheet.query.all())
-            return redirect('/index.html')
+            return redirect(url_for('classDet'))
         return render_template('charDet.html', title='New Character',
                 form = form)
 
@@ -68,23 +68,29 @@ def charDet():
 def classDet():
     form = ClassDets()
     if form.validate_on_submit():
-        return redirect('/index.html')
+        print ("redirect?")
+        return redirect(url_for('skillsLangDet'))
     for i in range(session['level']):
-        form.classList.append_entry(FormField(singleClass))
+        form.classList.append_entry(FormField(SingleClass))
+    print ("retting")
+    print (form.errors)
     return render_template('classDet.html', title='New Character',
             form = form, length = session['level'])
 
-#@app.route('/skillsDet.html', methods=['GET','POST'])
-#def skillsLangDet():
+@app.route('/skillsDet.html', methods=['GET','POST'])
+def skillsLangDet():
+    form = SkillsLangsDets()
+    if form.validate_on_submit():
+        return redirect(url_for('index'))
+    return render_template('skillsLangsDet.html', title='New Character',
+            form=form)
 
 @app.route('/characters.html')
 def charView():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     else:
-        #get the current user
         us_id = current_user.get_id()
-        #fetch their data from the db
         char = User.query.get(us_id)
         lst = char.sheets.all()
         return render_template('characters.html',
