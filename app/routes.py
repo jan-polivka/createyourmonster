@@ -38,7 +38,7 @@ def register():
         return redirect(url_for('/index.html'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username = form.username.data, email = "x@y.cz")
+        user = User(username = form.username.data, email = form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -53,6 +53,14 @@ def charDet():
         if form.validate_on_submit():
             session['level'] = form.level.data
             if current_user.is_authenticated:
+                #One could certainly make an argument that accessing
+                #the database before the sheet creation is finished
+                #is not a good solution and I agree.
+                #I think the creation would be best handled client-side
+                #until the final submission.
+                #Data handling on the client-side is outside the scope
+                #of this side-project and therefore I am okay with
+                #such short-comings as this.
                 s = Sheet(user_id=current_user.get_id(),
                         name=form.name.data,
                         gender=form.gender.data,
@@ -90,7 +98,6 @@ def skillsLangDet():
     if form.validate_on_submit():
         user = User.query.get(current_user.get_id())
         for el in form.langList:
-            print (el.data['lang'])
             if el.data['lang'] == 'Common':
                 user.sheets[-1].common = True
             if el.data['lang'] == 'Dwarvish':
@@ -121,13 +128,59 @@ def charView():
         return render_template('characters.html',
                 title = 'Your characters', lst = lst)
 
+@app.route('/delChar/<char_id>')
+def delChar(char_id):
+    sheet = Sheet.query.get(char_id)
+    if sheet.user_id == int(current_user.get_id()):
+        db.session.delete(sheet)
+        db.session.commit()
+        return redirect(url_for('charView'))
+    else:
+        return redirect('/chars/'+str(sheet.id))
+
+@app.route('/editChar/<char_id>', methods = ['GET','POST'])
+def editChar(char_id):
+    sheet = Sheet.query.get(char_id)
+    form = CharDets(name = sheet.name, gender = sheet.gender,
+            level = sheet.level)
+    if sheet.user_id != int(current_user.get_id()):
+        return redirect(url_for('index'))
+    attributes = ['name', 'gender', 'level']
+
+    if form.validate_on_submit():
+        for attr in attributes:
+            setattr(sheet, attr, getattr(form, attr).data)
+        db.session.commit()
+        return redirect('/chars/'+str(sheet.id))
+    return render_template('editChar.html', title = 'Edit you character',
+            form = form)
+
+#@app.route('/editClass/<char_id>', methods = ['GET','POST'])
+#def editClass(char_id):
+#    sheet = Sheet.query.get(char_id)
+#    form = ClassDets(name = sheet.name, gender = sheet.gender,
+#            level = sheet.level)
+#    if sheet.user_id != int(current_user.get_id()):
+#        return redirect(url_for('index'))
+#    attributes = ['name', 'gender', 'level']
+#
+#    if form.validate_on_submit():
+#        for attr in attributes:
+#            setattr(sheet, attr, getattr(form, attr).data)
+#        db.session.commit()
+#        return redirect('/chars/'+str(sheet.id))
+#    return render_template('editClass.html', title = 'Edit you character',
+#            form = form)
+
+
+#@app.route('/editSkills/<char_id>', methods = ['GET','POST'])
+#def editSkills(char_id):
+
 @app.route('/chars/<char_id>')
 def singleChar(char_id):
     sheet = Sheet.query.get(char_id)
     langList = []
     langs = (languages[1:])
-    print (sheet.elvish)
-    print (sheet.common)
     for lang in langs:
         if getattr(sheet, lang.lower()):
             langList.append(lang)

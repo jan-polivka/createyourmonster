@@ -21,7 +21,12 @@
 	<b>Experties: </b>
 	{% for exp in expList %}
 		{{exp}}
-	{% endfor %}
+		{% endfor %}<br>
+	<br>	
+	<a href="/editChar/{{sheet.id}}">Edit</a>
+	<br>
+	<br>
+	<a href="/delChar/{{sheet.id}}">DELETE</a>
 
 
 {% endblock %}
