@@ -1,4 +1,26 @@
 {% extends "create.html" %}
 
 {% block create_content %}
+	<h2>Assign proficiency or expertise to your skills"</h2>
+	<p>
+		{{form.acrobatics.label }}<br>
+		{{form.acrobatics}}
+	</p>
+	<p>
+		{{form.animals.label }}<br>
+		{{form.animals}}
+	</p>
+	<p>
+		{{form.arcana.label }}<br>
+		{{form.arcana}}
+	</p>
+	<h2>Choose languages</h2>
+			{% for sub in form.langList %}
+				{{ sub.hidden_tag() }}
+				{% for el in sub %}
+					{% if el.label.text == "Language" %}
+					{{ el.label }} {{ el }}<br>
+					{% endif %}
+				{% endfor %}
+			{% endfor %} 
 {% endblock %}

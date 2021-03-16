@@ -4,7 +4,9 @@
 	<h1>Your existing characters</h1>
 	<div>
 		{% for ch in lst %}
-			{{ ch.name }}
+			<b>Character:</b>
+			<a href="/chars/{{ch.id}}.html">{{ ch.name }}</a>
+			<b>Level:</b> {{ ch.level }}
 			<br>
 		{% endfor %}
 	</div>

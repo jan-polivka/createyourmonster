@@ -5,9 +5,22 @@ from flask_login import UserMixin
 class Sheet(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    hitPoints = db.Column(db.Integer)
     name = db.Column(db.String(64))
     gender = db.Column(db.String(64))
     level = db.Column(db.Integer)
+    #Here is a limitation of SQL
+    #I can't add any homebrew because the choices are hardcoded.
+    #I think I need Entry-Attribute-Value solution and NoSQL
+    #seems much better suited for this
+    bard = db.Column(db.Integer)
+    barbarian = db.Column(db.Integer)
+    common = db.Column(db.Boolean)
+    elvish = db.Column(db.Boolean)
+    dwarvish = db.Column(db.Boolean)
+    acrobatics = db.Column(db.Integer)
+    animals = db.Column(db.Integer)
+    arcana = db.Column(db.Integer)
     
 
     def __repr__(self):

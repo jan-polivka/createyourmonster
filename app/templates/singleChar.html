@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<h1>{{sheet.name}}</h1>
+<b>Level:</b> {{sheet.level}}<br>
+<b>Gender:</b> {{sheet.gender}}<br>
+<b>Hit Points:</b> {{sheet.hitPoints}}<br>
+<b>Classes: </b>
+	{% for class in classList %}
+		{{class}}
+	{% endfor %}<br>
+<b>Languages: </b>
+	{% for lang in langList %}
+		{{lang}}	
+	{% endfor %}<br>
+	<b>Proficiencies: </b>
+	{% for prof in profList %}
+		{{prof}}
+	{% endfor %}<br>
+	<b>Experties: </b>
+	{% for exp in expList %}
+		{{exp}}
+	{% endfor %}
+
+
+{% endblock %}
