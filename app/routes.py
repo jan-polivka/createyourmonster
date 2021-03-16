@@ -75,17 +75,18 @@ def charDet():
 def classDet():
     form = ClassDets()
     if form.validate_on_submit():
-        user = User.query.get(current_user.get_id())
-        user.sheets[-1].hitPoints = 0
-        user.sheets[-1].barbarian = 0
-        user.sheets[-1].bard = 0
-        for el in form.classList:
-            user.sheets[-1].hitPoints += el.data['hitPoints']
-            if el.data['classPick'] == "barbarian":
-                user.sheets[-1].barbarian += 1
-            elif el.data['classPick'] == "bard":
-                user.sheets[-1].bard += 1
-        db.session.commit()
+        if current_user.is_authenticated:
+            user = User.query.get(current_user.get_id())
+            user.sheets[-1].hitPoints = 0
+            user.sheets[-1].barbarian = 0
+            user.sheets[-1].bard = 0
+            for el in form.classList:
+                user.sheets[-1].hitPoints += el.data['hitPoints']
+                if el.data['classPick'] == "barbarian":
+                    user.sheets[-1].barbarian += 1
+                elif el.data['classPick'] == "bard":
+                    user.sheets[-1].bard += 1
+            db.session.commit()
         return redirect(url_for('skillsLangDet'))
     for i in range(session['level']):
         form.classList.append_entry(FormField(SingleClass))
@@ -96,18 +97,19 @@ def classDet():
 def skillsLangDet():
     form = SkillsLangsDets()
     if form.validate_on_submit():
-        user = User.query.get(current_user.get_id())
-        for el in form.langList:
-            if el.data['lang'] == 'Common':
-                user.sheets[-1].common = True
-            if el.data['lang'] == 'Dwarvish':
-                user.sheets[-1].dwarvish = True
-            if el.data['lang'] == 'Elvish':
-                user.sheets[-1].elvish = True
-        user.sheets[-1].acrobatics = skills.index(form.acrobatics.data)
-        user.sheets[-1].animals = skills.index(form.animals.data)
-        user.sheets[-1].arcana = skills.index(form.arcana.data)
-        db.session.commit()
+        if current_user.is_authenticated:
+            user = User.query.get(current_user.get_id())
+            for el in form.langList:
+                if el.data['lang'] == 'Common':
+                    user.sheets[-1].common = True
+                if el.data['lang'] == 'Dwarvish':
+                    user.sheets[-1].dwarvish = True
+                if el.data['lang'] == 'Elvish':
+                    user.sheets[-1].elvish = True
+            user.sheets[-1].acrobatics = skills.index(form.acrobatics.data)
+            user.sheets[-1].animals = skills.index(form.animals.data)
+            user.sheets[-1].arcana = skills.index(form.arcana.data)
+            db.session.commit()
         return redirect(url_for('index'))
     #Because I am creating a proof of concept, I decided to use
     #an arbitrary number for the number of languages
